@@ -1,11 +1,4 @@
-use warp::{
-    body::BodyDeserializeError, cors::CorsForbidden, http::Method, http::StatusCode,
-    reject::Reject, Filter, Rejection, Reply,
-};
-
-async fn get_files() -> Result<impl warp::Reply, warp::Rejection> {
-    Ok(warp::reply::with_status("Here is your file", StatusCode::OK))
-}
+use warp::{ http::StatusCode, Filter};
 
 async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
     Ok(warp::reply::with_status("Service is running", StatusCode::OK))
