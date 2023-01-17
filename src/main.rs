@@ -13,42 +13,18 @@ async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
 
 #[tokio::main]
 async fn main() {
-
-    
     // let cors = warp::cors()
     //     .allow_any_origin()
     //     .allow_header("content-type")
     //     .allow_methods(&[Method::PUT, Method::POST, Method::GET, Method::DELETE]);
-
+    
+    let assets = warp::path("images")
+        .and(warp::fs::dir("images"));
+    
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
 
-    let get_files = warp::get()
-        .and(warp::path("image"))
-        .and(warp::path("jpeg"))
-        .and(warp::path("regular"))
-
-        // .and(warp::path::end())
-        .and(warp::fs::file("test.jpeg"));
-        // .and(warp::query())
-        // .and_then(get_files);
-    let get_large_file = warp::get()
-        .and(warp::path("image"))
-        .and(warp::path("jpeg"))
-        .and(warp::path("large"))
-
-        // .and(warp::path::end())
-        .and(warp::fs::file("large_jpeg.jpeg"));
-    // let edit_question = warp::put()
-    //     .and(warp::path("questions"))
-    //     .and(warp::path::param::<String>())
-    //     .and(warp::path::end())
-    //     .and(store_filter.clone())
-    //     .and(warp::body::json())
-    //     .and_then(edit_question);
-
-
-    let routes = get_files.or(get_large_file).or(health_check);
+    let routes = health_check.or(assets);
         // .with(cors)
         // .recover(return_error);
 
