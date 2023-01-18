@@ -1,10 +1,6 @@
-use warp::{ http::StatusCode, Filter};
+use warp::{ http::StatusCode, Filter, reply::Reply};
 
 async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
-    Ok(warp::reply::with_status("Service is running", StatusCode::OK))
-}
-
-async fn home() -> Result<impl warp::Reply, warp::Rejection> {
     Ok(warp::reply::with_status("Service is running", StatusCode::OK))
 }
 
@@ -37,11 +33,22 @@ async fn main() {
         </body>
     </html>
     "#;
+
     let index = warp::path("home").and(warp::path::end()).map(move|| {
         warp::reply::html(body)
-    });;
+    });
+    
     let assets = warp::path("images")
-        .and(warp::fs::dir("images"));
+        .and(warp::fs::dir("images")).map( |reply: warp::filters::fs::File| {
+            print!("{:?}", reply);
+            if reply.path().ends_with("HEIC_GOOD.heic") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Content-Type", "image/heic").into_response()
+            } else {
+                println!("else {:?}", reply);
+                reply.into_response()
+            }
+        });
     
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
