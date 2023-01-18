@@ -4,20 +4,48 @@ async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
     Ok(warp::reply::with_status("Service is running", StatusCode::OK))
 }
 
+async fn home() -> Result<impl warp::Reply, warp::Rejection> {
+    Ok(warp::reply::with_status("Service is running", StatusCode::OK))
+}
+
 #[tokio::main]
 async fn main() {
     // let cors = warp::cors()
     //     .allow_any_origin()
     //     .allow_header("content-type")
     //     .allow_methods(&[Method::PUT, Method::POST, Method::GET, Method::DELETE]);
-    
+    let mut body = r#"
+    <html>
+        <head>
+            <title>Test Files</title>
+        </head>
+        <body>
+            <h1>Test Images</h1>
+            <h2>JPEG</h2>
+            <a href="https://test-data-serve.onrender.com/images/valid.jpeg">small jpeg</a>
+            <a href="https://test-data-serve.onrender.com/images/17mb.jpeg">large 17mb jpeg</a>
+            <a href="https://test-data-serve.onrender.com/images/24mb.jpeg">large 24mb jpeg</a>
+            <a href="https://test-data-serve.onrender.com/images/28mb.jpeg">larger 28mb jpeg</a>
+            <a href="https://test-data-serve.onrender.com/images/40mb.jpeg">larger 40mb jpeg</a>
+            <h2>PNG</h2>
+            <a href="https://test-data-serve.onrender.com/images/PNG_Test.png">test png</a>
+            <h2>SVG</h2>
+            <a href="https://test-data-serve.onrender.com/images/SVG_Test.svg">test svg</a>
+            <h2>HEIC</h2>
+            <a href="https://test-data-serve.onrender.com/images/HEIC_Test.heic">test heic</a>
+        </body>
+    </html>
+    "#;
+    let index = warp::path("home").and(warp::path::end()).map(move|| {
+        warp::reply::html(body)
+    });;
     let assets = warp::path("images")
         .and(warp::fs::dir("images"));
     
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
 
-    let routes = health_check.or(assets);
+    let routes = health_check.or(assets).or(index);
         // .with(cors)
         // .recover(return_error);
 
