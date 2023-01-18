@@ -1,5 +1,4 @@
-use warp::{ http::StatusCode, Filter, reply::Reply};
-
+use warp::{ http::StatusCode, http::Uri, Filter, reply::Reply};
 async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
     Ok(warp::reply::with_status("Service is running", StatusCode::OK))
 }
@@ -31,6 +30,8 @@ async fn main() {
             <a href="https://test-data-serve.onrender.com/images/HEIC_GOOD.heic">good test heic</a>
             <h2>Invalid application/octet-stream</h2>
             <a href="https://test-data-serve.onrender.com/images/HEIC_Test.heic">test heic - invalid content-type</a>
+            <h2>Redirect</h2>
+            <a href="https://test-data-serve.onrender.com/will_redirect">will redirect</a>
             </body>
     </html>
     "#;
@@ -54,7 +55,10 @@ async fn main() {
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
 
-    let routes = health_check.or(assets).or(index);
+        let redirect_route = warp::path("will_redirect").map(|| {
+            warp::redirect(Uri::from_static("https://test-data-serve.onrender.com/images/valid.jpeg"))
+        });
+    let routes = health_check.or(assets).or(index).or(redirect_route);
         // .with(cors)
         // .recover(return_error);
 
