@@ -33,6 +33,7 @@ async fn main() {
             <a href="https://test-data-serve.onrender.com/images/SVG_Test.svg">test svg</a>
             <h2>HEIC</h2>
             <a href="https://test-data-serve.onrender.com/images/HEIC_Test.heic">test heic</a>
+            <a href="https://test-data-serve.onrender.com/images/HEIC_GOOD.heic">good test heic</a>
         </body>
     </html>
     "#;
