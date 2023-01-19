@@ -7,7 +7,6 @@ async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
 async fn main() {
     let cors = warp::cors()
         .allow_any_origin()
-        .allow_header("content-type")
         .allow_methods(&[Method::GET]);
 
     let mut body = r#"
