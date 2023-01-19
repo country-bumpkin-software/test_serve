@@ -1,14 +1,15 @@
-use warp::{ http::StatusCode, http::Uri, Filter, reply::Reply};
+use warp::{ http::StatusCode, http::Uri, http::Method, Filter, reply::Reply};
 async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
     Ok(warp::reply::with_status("Service is running", StatusCode::OK))
 }
 
 #[tokio::main]
 async fn main() {
-    // let cors = warp::cors()
-    //     .allow_any_origin()
-    //     .allow_header("content-type")
-    //     .allow_methods(&[Method::PUT, Method::POST, Method::GET, Method::DELETE]);
+    let cors = warp::cors()
+        .allow_any_origin()
+        .allow_header("content-type")
+        .allow_methods(&[Method::GET]);
+
     let mut body = r#"
     <html>
         <head>
@@ -58,8 +59,8 @@ async fn main() {
         let redirect_route = warp::path("will_redirect").map(|| {
             warp::redirect(Uri::from_static("https://test-data-serve.onrender.com/images/valid.jpeg"))
         });
-    let routes = health_check.or(assets).or(index).or(redirect_route);
-        // .with(cors)
+    let routes = health_check.or(assets).or(index).or(redirect_route)
+        .with(cors);
         // .recover(return_error);
 
     warp::serve(routes).run(([0, 0, 0, 0], 8088)).await;
