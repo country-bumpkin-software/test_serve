@@ -48,7 +48,7 @@ async fn main() {
                 warp::reply::with_header(reply, "Content-Type", "image/heic").into_response()
             } else if reply.path().ends_with("cors.jpeg") {
                 println!("1{:?}", reply);
-                warp::reply::with_header(reply, "Access-Control-Allow-Origin:", "https://developer.mozilla.org").into_response()
+                warp::reply::with_header(reply, "Access-Control-Allow-Origin", "https://developer.mozilla.org").into_response()
             } else {
                 println!("else {:?}", reply);
                 reply.into_response()
