@@ -46,6 +46,9 @@ async fn main() {
             if reply.path().ends_with("HEIC_GOOD.heic") {
                 println!("1{:?}", reply);
                 warp::reply::with_header(reply, "Content-Type", "image/heic").into_response()
+            } else if reply.path().ends_with("cors.jpeg") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Access-Control-Allow-Origin:", "https://developer.mozilla.org").into_response()
             } else {
                 println!("else {:?}", reply);
                 reply.into_response()
@@ -55,9 +58,10 @@ async fn main() {
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
 
-        let redirect_route = warp::path("will_redirect").map(|| {
-            warp::redirect(Uri::from_static("https://test-data-serve.onrender.com/images/valid.jpeg"))
-        });
+    let redirect_route = warp::path("will_redirect").map(|| {
+        warp::redirect(Uri::from_static("https://test-data-serve.onrender.com/images/valid.jpeg"))
+    });
+
     let routes = health_check.or(assets).or(index).or(redirect_route)
         .with(cors);
         // .recover(return_error);
