@@ -32,7 +32,7 @@ async fn main() {
             <a href="https://test-data-serve.onrender.com/images/HEIC_Test.heic">test heic - invalid content-type</a>
             <h2>Redirect</h2>
             <a href="https://test-data-serve.onrender.com/will_redirect">will redirect</a>
-            <h2>Redirect</h2>
+            <h2>Cors</h2>
             <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors</a>
             </body>
     </html>
