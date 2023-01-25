@@ -30,10 +30,14 @@ async fn main() {
             <a href="https://test-data-serve.onrender.com/images/HEIC_GOOD.heic">good test heic</a>
             <h2>Invalid application/octet-stream</h2>
             <a href="https://test-data-serve.onrender.com/images/HEIC_Test.heic">test heic - invalid content-type</a>
-            <h2>Redirect</h2>
+            <h2>Redirect (to valid jpeg image)</h2>
             <a href="https://test-data-serve.onrender.com/will_redirect">will redirect</a>
-            <h2>Cors</h2>
+            <h2>Cors (jpeg image)</h2>
             <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors</a>
+            <h2>Valid 240 Mega Pixel Image</h2>
+            <a href="https://test-data-serve.onrender.com/images/valid_240mp.jpeg">cors</a>
+            <h2>Invalid 256 Mega Pixel Image</h2>
+            <a href="https://test-data-serve.onrender.com/images/invalid_256mp.jpeg">cors</a>
             </body>
     </html>
     "#;
