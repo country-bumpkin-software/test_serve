@@ -33,7 +33,8 @@ async fn main() {
             <h2>Redirect (to valid jpeg image)</h2>
             <a href="https://test-data-serve.onrender.com/will_redirect">will redirect</a>
             <h2>Cors (jpeg image)</h2>
-            <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors</a>
+            <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors denied</a>
+            <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors allowed</a>
             <h2>Valid 240 Mega Pixel Image</h2>
             <a href="https://test-data-serve.onrender.com/images/valid_240mp.jpeg">Valid 240 Mega Pixel Image</a>
             <h2>Invalid 256 Mega Pixel Image</h2>
@@ -55,6 +56,9 @@ async fn main() {
             } else if reply.path().ends_with("cors.jpeg") {
                 println!("1{:?}", reply);
                 warp::reply::with_header(reply, "Access-Control-Allow-Origin", "https://developer.mozilla.org").into_response()
+            } else if reply.path().ends_with("cors_allowed.jpeg") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*").into_response()
             } else {
                 println!("else {:?}", reply);
                 reply.into_response()
