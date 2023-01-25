@@ -35,9 +35,9 @@ async fn main() {
             <h2>Cors (jpeg image)</h2>
             <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors</a>
             <h2>Valid 240 Mega Pixel Image</h2>
-            <a href="https://test-data-serve.onrender.com/images/valid_240mp.jpeg">cors</a>
+            <a href="https://test-data-serve.onrender.com/images/valid_240mp.jpeg">Valid 240 Mega Pixel Image</a>
             <h2>Invalid 256 Mega Pixel Image</h2>
-            <a href="https://test-data-serve.onrender.com/images/invalid_256mp.jpeg">cors</a>
+            <a href="https://test-data-serve.onrender.com/images/invalid_256mp.jpeg">Invalid 256 Mega Pixel Image</a>
             </body>
     </html>
     "#;
