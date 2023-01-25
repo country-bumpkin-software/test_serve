@@ -34,7 +34,7 @@ async fn main() {
             <a href="https://test-data-serve.onrender.com/will_redirect">will redirect</a>
             <h2>Cors (jpeg image)</h2>
             <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors denied</a>
-            <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors allowed</a>
+            <a href="https://test-data-serve.onrender.com/images/cors_allowed.jpeg">cors allowed</a>
             <h2>Valid 240 Mega Pixel Image</h2>
             <a href="https://test-data-serve.onrender.com/images/valid_240mp.jpeg">Valid 240 Mega Pixel Image</a>
             <h2>Invalid 256 Mega Pixel Image</h2>
