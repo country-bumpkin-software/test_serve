@@ -1,51 +1,59 @@
-use warp::{ http::StatusCode, http::Uri, http::Method, Filter, reply::Reply};
+use std::env;
+use warp::http::Uri;
+use warp::{ http::StatusCode, http::Method, Filter, reply::Reply};
+use warp::Rejection;
+use warp::reply::html;
+use askama::Template;
+use warp::reply::Response;
+use serde::Deserialize;
+
+type WebResult<T> = std::result::Result<T, Rejection>;
+#[derive(Deserialize, Debug, Clone)]
+struct EnvConfiguration {
+    base_url: String,
+}
+
+#[derive(Template, Clone)] // this will use warp::reply::Response and will generate the code...
+
+#[template(path = "index.html")] // using the template in this path, relative to the `templates` dir in the crate root
+struct BaseUrl<'a> {
+    site_url: &'a str, // the field name should match the env variable name
+                   
+}
+impl warp::Reply for BaseUrl<'_> {
+    fn into_response(self) -> warp::reply::Response {
+        Response::new(format!("message: {}", self.site_url).into())
+    }
+}
 async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
     Ok(warp::reply::with_status("Service is running", StatusCode::OK))
 }
 
+pub async fn home_handler() -> WebResult<impl Reply> {
+    let path = env::var("BASE_URL");
+    let template = BaseUrl {
+        site_url: &path.unwrap()
+    };
+    let res = template
+        .render()
+        .unwrap();
+    Ok(html(res))
+}
+
 #[tokio::main]
 async fn main() {
+    let path = env::var("BASE_URL");
+
+    let body = BaseUrl { site_url: &path.clone().unwrap()}; // instantiate your struct
+    body.render().unwrap();
+    // let body = body.render().unwrap();
     let cors = warp::cors()
         .allow_any_origin()
         .allow_methods(&[Method::GET]);
+    
+    // println!("the $PATH variable at the time of compiling was: {:?}", path.unwrap());
 
-    let mut body = r#"
-    <html>
-        <head>
-            <title>Test Files</title>
-        </head>
-        <body>
-            <h1>Test Images</h1>
-            <h2>JPEG</h2>
-            <a href="https://test-data-serve.onrender.com/images/valid.jpeg">small jpeg</a>
-            <a href="https://test-data-serve.onrender.com/images/17mb.jpeg">large 17mb jpeg</a>
-            <a href="https://test-data-serve.onrender.com/images/24mb.jpeg">large 24mb jpeg</a>
-            <a href="https://test-data-serve.onrender.com/images/28mb.jpeg">larger 28mb jpeg</a>
-            <a href="https://test-data-serve.onrender.com/images/40mb.jpeg">larger 40mb jpeg</a>
-            <h2>PNG</h2>
-            <a href="https://test-data-serve.onrender.com/images/PNG_Test.png">test png</a>
-            <h2>SVG</h2>
-            <a href="https://test-data-serve.onrender.com/images/SVG_Test.svg">test svg</a>
-            <h2>HEIC</h2>
-            <a href="https://test-data-serve.onrender.com/images/HEIC_GOOD.heic">good test heic</a>
-            <h2>Invalid application/octet-stream</h2>
-            <a href="https://test-data-serve.onrender.com/images/HEIC_Test.heic">test heic - invalid content-type</a>
-            <h2>Redirect (to valid jpeg image)</h2>
-            <a href="https://test-data-serve.onrender.com/will_redirect">will redirect</a>
-            <h2>Cors (jpeg image)</h2>
-            <a href="https://test-data-serve.onrender.com/images/cors.jpeg">cors denied</a>
-            <a href="https://test-data-serve.onrender.com/images/cors_allowed.jpeg">cors allowed</a>
-            <h2>Valid 240 Mega Pixel Image</h2>
-            <a href="https://test-data-serve.onrender.com/images/valid_240mp.jpeg">Valid 240 Mega Pixel Image</a>
-            <h2>Invalid 256 Mega Pixel Image</h2>
-            <a href="https://test-data-serve.onrender.com/images/invalid_256mp.jpeg">Invalid 256 Mega Pixel Image</a>
-            </body>
-    </html>
-    "#;
-
-    let index = warp::path("home").and(warp::path::end()).map(move|| {
-        warp::reply::html(body)
-    });
+    let index = warp::path("home").and(warp::path::end()).and_then(home_handler);
     
     let assets = warp::path("images")
         .and(warp::fs::dir("images")).map( |reply: warp::filters::fs::File| {
@@ -67,10 +75,20 @@ async fn main() {
     
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
-
-    let redirect_route = warp::path("will_redirect").map(|| {
-        warp::redirect(Uri::from_static("https://test-data-serve.onrender.com/images/valid.jpeg"))
+    
+    
+    let mut redirect_path = envy::from_env::<EnvConfiguration>()
+    .expect("Please provide BASE_URL env vars");
+    redirect_path = EnvConfiguration{base_url: redirect_path.base_url.to_owned() + "images/redirect.jpeg"};
+    
+    println!("base url is: {:?}", redirect_path.base_url);
+    let redirect_route = warp::path("will_redirect").map(move|| {
+        let uri = redirect_path.base_url.parse::<Uri>().unwrap();
+        print!("uri: {:?}", uri);
+        warp::redirect(uri)
     });
+
+   
 
     let routes = health_check.or(assets).or(index).or(redirect_route)
         .with(cors);

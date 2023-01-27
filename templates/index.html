@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head> </head>
+    <head>
+        <title>Test Files</title>
+    </head>
+    <body>
+        <h1>Test Images</h1>
+        <h2>JPEG</h2>
+        <a href="{{ site_url }}images/valid.jpeg">small jpeg</a>
+        <a href="{{ site_url }}images/17mb.jpeg">large 17mb jpeg</a>
+        <a href="{{ site_url }}images/24mb.jpeg">large 24mb jpeg</a>
+        <a href="{{ site_url }}images/28mb.jpeg">larger 28mb jpeg</a>
+        <a href="{{ site_url }}images/40mb.jpeg">larger 40mb jpeg</a>
+        <h2>PNG</h2>
+        <a href="{{ site_url }}images/PNG_Test.png">test png</a>
+        <h2>SVG</h2>
+        <a href="{{ site_url }}images/SVG_Test.svg">test svg</a>
+        <h2>HEIC</h2>
+        <a href="{{ site_url }}images/HEIC_GOOD.heic">good test heic</a>
+        <h2>Invalid application/octet-stream</h2>
+        <a href="{{ site_url }}images/HEIC_Test.heic">test heic - invalid content-type</a>
+        <h2>Redirect (to valid jpeg image)</h2>
+        <a href="{{ site_url }}will_redirect">will redirect</a>
+        <h2>Cors (jpeg image)</h2>
+        <a href="{{ site_url }}images/cors.jpeg">cors denied</a>
+        <a href="{{ site_url }}images/cors_allowed.jpeg">cors allowed</a>
+        <h2>Valid 240 Mega Pixel Image</h2>
+        <a href="{{ site_url }}images/valid_240mp.jpeg">Valid 240 Mega Pixel Image</a>
+        <h2>Invalid 256 Mega Pixel Image</h2>
+        <a href="{{ site_url }}images/invalid_256mp.jpeg">Invalid 256 Mega Pixel Image</a>
+        </body>
+</html>
