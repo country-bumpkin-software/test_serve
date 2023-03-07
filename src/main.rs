@@ -93,19 +93,18 @@ async fn main() {
     
     let mut redirect_video_path = envy::from_env::<EnvConfiguration>()
     .expect("Please provide BASE_URL env vars");
-    redirect_video_path = EnvConfiguration{base_url: redirect_path.base_url.to_owned() + "images/redirect_sample_960x540.mp4"};
+    redirect_video_path = EnvConfiguration{base_url: redirect_video_path.base_url.to_owned() + "images/redirect_sample_960x540.mp4"};
 
-    println!("base url is: {:?}", redirect_path.base_url);
     let redirect_route = warp::path("will_redirect").map(move|| {
         let uri = redirect_path.base_url.parse::<Uri>().unwrap();
         print!("uri: {:?}", uri);
         warp::redirect(uri)
     });
 
-    let redirect_video_route = warp::path("will_redirect_video").map(move|| {
-        let uri = redirect_video_path.base_url.parse::<Uri>().unwrap();
-        print!("uri: {:?}", uri);
-        warp::redirect(uri)
+    let redirect_video_route = warp::path("redirect_video").map(move|| {
+        let uri_video = redirect_video_path.base_url.parse::<Uri>().unwrap();
+        print!("uri: {:?}", uri_video);
+        warp::redirect(uri_video)
     });
 
    
