@@ -67,6 +67,9 @@ async fn main() {
             } else if reply.path().ends_with("cors_allowed.jpeg") {
                 println!("1{:?}", reply);
                 warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*").into_response()
+            } else if reply.path().ends_with("thumbnail_960x540.m4v") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*").into_response() 
             } else if reply.path().ends_with("file_example_AVI_1280_1_5MG.avi") {
                 println!("1{:?}", reply);
                 warp::reply::with_header(reply, "Content-Type", "video/avi").into_response()
@@ -81,7 +84,7 @@ async fn main() {
                 reply.into_response()
             }
         });
-        // file_example_XMSVIDEO_1280_1_5MG
+
     
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
