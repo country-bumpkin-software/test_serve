@@ -73,7 +73,10 @@ async fn main() {
             } else if reply.path().ends_with("sample_960x540.mp4") {
                 println!("1{:?}", reply);
                 warp::reply::with_header(reply, "Content-Type", "video/mpeg").into_response()
-            }else {
+            } else if reply.path().ends_with("cors_sample_960x540.mp4") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Access-Control-Allow-Origin", "https://developer.mozilla.org").into_response()
+            } else {
                 println!("else {:?}", reply);
                 reply.into_response()
             }
@@ -88,6 +91,10 @@ async fn main() {
     .expect("Please provide BASE_URL env vars");
     redirect_path = EnvConfiguration{base_url: redirect_path.base_url.to_owned() + "images/redirect.jpeg"};
     
+    let mut redirect_video_path = envy::from_env::<EnvConfiguration>()
+    .expect("Please provide BASE_URL env vars");
+    redirect_video_path = EnvConfiguration{base_url: redirect_path.base_url.to_owned() + "images/redirect_sample_960x540.mp4"};
+
     println!("base url is: {:?}", redirect_path.base_url);
     let redirect_route = warp::path("will_redirect").map(move|| {
         let uri = redirect_path.base_url.parse::<Uri>().unwrap();
@@ -95,9 +102,15 @@ async fn main() {
         warp::redirect(uri)
     });
 
+    let redirect_video_route = warp::path("will_redirect_video").map(move|| {
+        let uri = redirect_video_path.base_url.parse::<Uri>().unwrap();
+        print!("uri: {:?}", uri);
+        warp::redirect(uri)
+    });
+
    
 
-    let routes = health_check.or(assets).or(index).or(redirect_route)
+    let routes = health_check.or(assets).or(index).or(redirect_route).or(redirect_video_route)
         .with(cors);
         // .recover(return_error);
 
