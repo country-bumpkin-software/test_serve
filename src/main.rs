@@ -29,6 +29,10 @@ async fn health_check() -> Result<impl warp::Reply, warp::Rejection> {
     Ok(warp::reply::with_status("Service is running", StatusCode::OK))
 }
 
+async fn forbidden_route() -> Result<impl warp::Reply, warp::Rejection> {
+    Ok(warp::reply::with_status("You entered the forbidden realm", StatusCode::FORBIDDEN))
+}
+
 pub async fn home_handler() -> WebResult<impl Reply> {
     let path = env::var("BASE_URL");
     let template = BaseUrl {
@@ -89,6 +93,8 @@ async fn main() {
     let health_check  = warp::get()
         .and(warp::path("health")).and(warp::path::end()).and_then(health_check);
     
+    let forbidden  = warp::get()
+        .and(warp::path("403route")).and(warp::path::end()).and_then(forbidden_route);
     
     let mut redirect_path = envy::from_env::<EnvConfiguration>()
     .expect("Please provide BASE_URL env vars");
@@ -112,7 +118,7 @@ async fn main() {
 
    
 
-    let routes = health_check.or(assets).or(index).or(redirect_route).or(redirect_video_route)
+    let routes = health_check.or(assets).or(index).or(redirect_route).or(redirect_video_route).or(forbidden)
         .with(cors);
         // .recover(return_error);
 
