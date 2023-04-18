@@ -58,6 +58,44 @@
         <a href="{{ site_url }}images/cors_sample_960x540.mp4">cors mp4</a>
         <h2>403 Forbidden</h2>
         <a href="{{ site_url }}403route">403 forbidden</a>
-
+        <h2>Oversized Video</h2>
+        <a href="{{ site_url }}images/large_3840x2160.mp4">oversized video - mp4</a>
+        <h1>Test Audio</h1>
+        <h2>Valid Audio Formats</h2>
+        <h2>.Wav Audio</h2>
+        <a href="{{ site_url }}audio/sample-6s.wav">regular - .wav</a>
+        <h2>.Wave Audio</h2>
+        <a href="{{ site_url }}audio/sample-6s.wave">regular - .wave</a>
+        <h2>.mp3 Audio</h2>
+        <a href="{{ site_url }}audio/sample-12s.mp3">regular - .mp3</a>
+        <h2>.ogg Audio</h2>
+        <a href="{{ site_url }}audio/sample-ogg-1mg.ogg">regular - .ogg</a>
+        <h2>.oga Audio</h2>
+        <a href="{{ site_url }}audio/sample-ogg-1mg.oga">regular - .oga</a>
+        <h2>.spx Audio</h2>
+        <a href="{{ site_url }}audio/sample-ogg-1mg.spx">regular - .spx</a>
+        <h2>.mp4 Audio</h2>
+        <a href="{{ site_url }}audio/sample-mp4.mp4">regular - .mp4</a>
+        <h2>.m4a Audio</h2>
+        <a href="{{ site_url }}audio/sample-m4a.m4a">regular - .m4a</a>
+        <h2>.m4b Audio</h2>
+        <a href="{{ site_url }}audio/sample-m4b.m4b">regular - .m4b</a>
+        <h2>.m4p Audio</h2>
+        <a href="{{ site_url }}audio/sample-m4p.m4p">regular - .m4p</a>
+        <h2>.m4r Audio</h2>
+        <a href="{{ site_url }}audio/sample-m4r.m4r">regular - .m4r</a>
+        <h2>.m4v Audio</h2>
+        <a href="{{ site_url }}audio/sample-m4v.m4v">regular - .m4v</a>
+        <h2>NonValid and oversized Audio File</h2>
+        <h2>Oversized .ogg</h2>
+        <a href="{{ site_url }}audio/sample-oversived-ogg.ogg">invalid - oversized - .ogg</a>
+        <h2>Incorrect mimetype for mp3 - MPEG</h2>
+        <a href="{{ site_url }}audio/sample-12s-mpeg.mpeg">invalid - unexpected mime-type - .mpeg</a>
+        <h2>Redirect (to valid wav audio file)</h2>
+        <a href="{{ site_url }}redirect_audio">will redirect</a>
+        <h2>Cors * (to valid wav audio file)</h2>
+        <a href="{{ site_url }}audio/sample-6s-cors-allow.wav">Cors *</a>
+        <h2>Cors restricted (to valid wav audio file)</h2>
+        <a href="{{ site_url }}audio/sample-6s-cors-restricted.wav">Cors restricted</a>
     </body>
 </html>
