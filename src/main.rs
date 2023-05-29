@@ -73,7 +73,9 @@ async fn main() {
             warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
         } else if reply.path().ends_with("sample-12s-mpeg.mpeg") {
             warp::reply::with_header(reply, "Content-Type", "audio/mpeg").into_response()
-        } else if reply.path().ends_with("32ch-44100-bwf.wav") {
+        } else if reply.path().ends_with("sample3.mp2") {
+            warp::reply::with_header(reply, "Content-Type", "audio/mpeg").into_response()
+        }else if reply.path().ends_with("32ch-44100-bwf.wav") {
             warp::reply::with_header(reply, "Content-Type", "audio/x-wav").into_response()
         } else if reply.path().ends_with("sample-m4b.m4b") {
             warp::reply::with_header(reply, "Content-Type", "audio/x-m4a").into_response()
