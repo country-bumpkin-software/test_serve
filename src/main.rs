@@ -81,6 +81,8 @@ async fn main() {
             warp::reply::with_header(reply, "Content-Type", "audio/x-m4a").into_response()
         } else if reply.path().ends_with("sample-m4p.m4p") {
             warp::reply::with_header(reply, "Content-Type", "audio/x-m4a").into_response()
+        } else if reply.path().ends_with("webm_audio.webm") {
+            warp::reply::with_header(reply, "Content-Type", "audio/webm").into_response()
         } else if reply.path().ends_with("sample-6s-cors-restricted.wav") {
             println!("1{:?}", reply);
             warp::reply::with_header(reply, "Access-Control-Allow-Origin", "https://developer.mozilla.org").into_response() 
