@@ -84,6 +84,8 @@ async fn main() {
             warp::reply::with_header(reply, "Content-Type", "audio/x-m4a").into_response()
         } else if reply.path().ends_with("webm_audio.webm") {
             warp::reply::with_header(reply, "Content-Type", "audio/webm").into_response()
+        } else if reply.path().ends_with("invalid.mpeg") {
+            warp::reply::with_header(reply, "Content-Type", "audio/whoopwhoop").into_response()
         } else if reply.path().ends_with("timeout.wav") {
             thread::sleep(time::Duration::from_millis(91000));
             warp::reply::with_header(reply, "Content-Type", "audio/wav").into_response()
