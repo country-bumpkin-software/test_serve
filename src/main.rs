@@ -65,11 +65,7 @@ async fn main() {
             warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
         } else if reply.path().ends_with("sample-m4a.m4a") {
             warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
-        } else if reply.path().ends_with("sample-m4b.m4b") {
-            warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
-        } else if reply.path().ends_with("sample-m4p.m4p") {
-            warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
-        } else if reply.path().ends_with("sample-m4r.m4r") {
+        }  else if reply.path().ends_with("sample-m4r.m4r") {
             warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
         } else if reply.path().ends_with("sample-m4v.m4v") {
             warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
@@ -77,6 +73,12 @@ async fn main() {
             warp::reply::with_header(reply, "Content-Type", "audio/mp4").into_response()
         } else if reply.path().ends_with("sample-12s-mpeg.mpeg") {
             warp::reply::with_header(reply, "Content-Type", "audio/mpeg").into_response()
+        } else if reply.path().ends_with("32ch-44100-bwf.wav") {
+            warp::reply::with_header(reply, "Content-Type", "audio/x-wav").into_response()
+        } else if reply.path().ends_with("sample-m4b.m4b") {
+            warp::reply::with_header(reply, "Content-Type", "audio/x-m4a").into_response()
+        } else if reply.path().ends_with("sample-m4p.m4p") {
+            warp::reply::with_header(reply, "Content-Type", "audio/x-m4a").into_response()
         } else if reply.path().ends_with("sample-6s-cors-restricted.wav") {
             println!("1{:?}", reply);
             warp::reply::with_header(reply, "Access-Control-Allow-Origin", "https://developer.mozilla.org").into_response() 
