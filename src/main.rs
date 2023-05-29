@@ -6,6 +6,7 @@ use warp::reply::html;
 use askama::Template;
 use warp::reply::Response;
 use serde::Deserialize;
+use std::{thread, time};
 
 type WebResult<T> = std::result::Result<T, Rejection>;
 #[derive(Deserialize, Debug, Clone)]
@@ -83,6 +84,9 @@ async fn main() {
             warp::reply::with_header(reply, "Content-Type", "audio/x-m4a").into_response()
         } else if reply.path().ends_with("webm_audio.webm") {
             warp::reply::with_header(reply, "Content-Type", "audio/webm").into_response()
+        } else if reply.path().ends_with("timeout.wav") {
+            thread::sleep(time::Duration::from_millis(91000));
+            warp::reply::with_header(reply, "Content-Type", "audio/wav").into_response()
         } else if reply.path().ends_with("sample-6s-cors-restricted.wav") {
             println!("1{:?}", reply);
             warp::reply::with_header(reply, "Access-Control-Allow-Origin", "https://developer.mozilla.org").into_response() 
