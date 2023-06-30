@@ -216,10 +216,12 @@ async fn main() {
 
     let png_txt = include_str!("../dataurl/png.in");
     let dino_png_txt = include_str!("../dataurl/dino_png.in");
-    let mb17_jpeg_txt = include_str!("../dataurl/17mb_jpeg.in");
-    // let mb17_jpeg_blob: Blob = Blob::from_str(mb17_jpeg_txt).unwrap();
     let data_url_small_jpeg_txt = include_str!("../dataurl/small_jpeg.in");
     let data_url_svg_text = include_str!("../dataurl/svg.in");
+    let dog_svg_text = include_str!("../dataurl/dog_svg.in");
+    let zog_svg_text = include_str!("../dataurl/zog_svg.in");
+
+
     let dataUrlPng = warp::path("data_url_png").map(move || {
         warp::reply::html(png_txt)
     });
@@ -233,6 +235,8 @@ async fn main() {
         warp::reply::html(data_url_small_jpeg_txt)
     });
     let data_url_svg = warp::path("data_url_svg").map(move || warp::reply::html(data_url_svg_text));
+    let data_url_dog_svg = warp::path("data_url_dog_svg").map(move || warp::reply::html(dog_svg_text));
+    let data_url_zog_svg = warp::path("data_url_zog_svg").map(move || warp::reply::html(zog_svg_text));
 
     let routes = health_check
         .or(assets)
@@ -240,6 +244,8 @@ async fn main() {
         .or(dataUrlDinoPng)
         .or(data_url_small_jpeg)
         .or(data_url_svg)
+        .or(data_url_dog_svg)
+        .or(data_url_zog_svg)
         .or(index)
         .or(audio)
         .or(redirect_route)
