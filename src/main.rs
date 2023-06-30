@@ -228,16 +228,14 @@ async fn main() {
     let dataUrlDinoPng = warp::path("data_url_dino_png").map(move || {
         warp::reply::html(dino_png_txt)
     });
-    // let data_url_17mb_jpeg = warp::path("data_url_17mb_jpeg").map(move || {
-    //     warp::reply::html(mb17_jpeg_blob)
-    // });
     let data_url_small_jpeg = warp::path("data_url_small_jpeg").map(move || {
         warp::reply::html(data_url_small_jpeg_txt)
     });
     let data_url_svg = warp::path("data_url_svg").map(move || warp::reply::html(data_url_svg_text));
     let data_url_dog_svg = warp::path("data_url_dog_svg").map(move || warp::reply::html(dog_svg_text));
     let data_url_zog_svg = warp::path("data_url_zog_svg").map(move || warp::reply::html(zog_svg_text));
-
+    let uri_svg1 = warp::path("uri_svg1").map(move || warp::reply::html("data:image/svg+xml,%3Csvg%20height%3D%22150%22%20width%3D%22400%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22grad1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20style%3D%22stop-color%3Argb(255%2C255%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20style%3D%22stop-color%3Argb(255%2C0%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cellipse%20cx%3D%22200%22%20cy%3D%2270%22%20rx%3D%2285%22%20ry%3D%2255%22%20fill%3D%22url(%23grad1)%22%20%2F%3E%0A%20%20Sorry%2C%20your%20browser%20does%20not%20support%20inline%20SVG.%0A%3C%2Fsvg%3E"));
+    let uri_svg2 = warp::path("uri_svg2_html").map(move || warp::reply::html("data:image/svg+xml,%3C!DOCTYPE%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0A%0A%3Csvg%20height%3D%22150%22%20width%3D%22400%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22grad1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20style%3D%22stop-color%3Argb(255%2C255%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20style%3D%22stop-color%3Argb(255%2C0%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cellipse%20cx%3D%22200%22%20cy%3D%2270%22%20rx%3D%2285%22%20ry%3D%2255%22%20fill%3D%22url(%23grad1)%22%20%2F%3E%0A%20%20Sorry%2C%20your%20browser%20does%20not%20support%20inline%20SVG.%0A%3C%2Fsvg%3E%0A%0A%3C%2Fbody%3E%0A%3C%2Fhtml%3E"));
     let routes = health_check
         .or(assets)
         .or(dataUrlPng)
@@ -246,6 +244,8 @@ async fn main() {
         .or(data_url_svg)
         .or(data_url_dog_svg)
         .or(data_url_zog_svg)
+        .or(uri_svg1)
+        .or(uri_svg2)
         .or(index)
         .or(audio)
         .or(redirect_route)
