@@ -138,6 +138,10 @@ async fn main() {
                     println!("1{:?}", reply);
                     warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*")
                         .into_response()
+                }  else if reply.path().ends_with("lottie.json") {
+                    println!("{:?}", reply);
+                    warp::reply::with_header(reply, "Content-Type", "application/json")
+                        .into_response()
                 } else if reply.path().ends_with("thumbnail_960x540.m4v") {
                     println!("1{:?}", reply);
                     warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*")
