@@ -123,7 +123,10 @@ async fn main() {
             .and(warp::fs::dir("images"))
             .map(|reply: warp::filters::fs::File| {
                 print!("{:?}", reply);
-                if reply.path().ends_with("HEIC_GOOD.heic") {
+                if reply.path().ends_with("mp4file.mp4") {
+                    println!("1{:?}", reply);
+                    warp::reply::with_header(reply, "Content-Type", "video/avi").into_response()
+                } else if reply.path().ends_with("HEIC_GOOD.heic") {
                     println!("1{:?}", reply);
                     warp::reply::with_header(reply, "Content-Type", "image/heic").into_response()
                 } else if reply.path().ends_with("cors.jpeg") {
