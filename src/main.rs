@@ -185,6 +185,12 @@ async fn main() {
                         "https://developer.mozilla.org",
                     )
                     .into_response()
+                } else if reply.path().ends_with("timeout.jpeg") {
+                    thread::sleep(time::Duration::from_millis(91000));
+                    warp::reply::with_header(reply, "Content-Type", "image/jpeg").into_response()
+                } else if reply.path().ends_with("timeout.mp4") {
+                    thread::sleep(time::Duration::from_millis(91000));
+                    warp::reply::with_header(reply, "Content-Type", "video/mp4").into_response()
                 } else {
                     println!("else {:?}", reply);
                     reply.into_response()
