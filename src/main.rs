@@ -8,8 +8,8 @@ use warp::reply::Response;
 use warp::{http::Method, http::StatusCode, reply::Reply, Filter};
 use warp::{reply, Rejection};
 extern crate blob;
-use std::str::FromStr;
 use blob::Blob;
+use std::str::FromStr;
 
 type WebResult<T> = std::result::Result<T, Rejection>;
 #[derive(Deserialize, Debug, Clone)]
@@ -118,6 +118,28 @@ async fn main() {
                     reply.into_response()
                 }
             });
+    let tiff = warp::path("images/tiff")
+        .and(warp::fs::dir("images/tiff"))
+        .map(|reply: warp::filters::fs::File| {
+            if reply.path().ends_with("shapes_900kb.tiff") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Content-Type", "image/tiff").into_response()
+            } else if reply.path().ends_with("shapes_com_15kb.tif") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Content-Type", "image/tif").into_response()
+            } else if reply.path().ends_with("shapes_com_15kb.tiff") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Content-Type", "image/tiff").into_response()
+            } else if reply.path().ends_with("23mb_no_compres.tiff") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Content-Type", "image/tiff").into_response()
+            } else if reply.path().ends_with("25mb_no_compres.tiff") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Content-Type", "image/tiff").into_response()
+            } else {
+                reply.into_response()
+            }
+        });
     let assets =
         warp::path("images")
             .and(warp::fs::dir("images"))
@@ -141,15 +163,15 @@ async fn main() {
                     println!("1{:?}", reply);
                     warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*")
                         .into_response()
-                }  else if reply.path().ends_with("lottie.json") {
+                } else if reply.path().ends_with("lottie.json") {
                     println!("{:?}", reply);
                     warp::reply::with_header(reply, "Content-Type", "application/json")
                         .into_response()
-                }  else if reply.path().ends_with("jokely_lottie.json") {
+                } else if reply.path().ends_with("jokely_lottie.json") {
                     println!("{:?}", reply);
                     warp::reply::with_header(reply, "Content-Type", "application/json")
                         .into_response()
-                }  else if reply.path().ends_with("lottie_optimised.json") {
+                } else if reply.path().ends_with("lottie_optimised.json") {
                     println!("{:?}", reply);
                     warp::reply::with_header(reply, "Content-Type", "application/json")
                         .into_response()
@@ -157,11 +179,11 @@ async fn main() {
                     println!("{:?}", reply);
                     warp::reply::with_header(reply, "Content-Type", "application/json")
                         .into_response()
-                }  else if reply.path().ends_with("empty.json") {
+                } else if reply.path().ends_with("empty.json") {
                     println!("{:?}", reply);
                     warp::reply::with_header(reply, "Content-Type", "application/json")
                         .into_response()
-                }  else if reply.path().ends_with("thumbnail_960x540.m4v") {
+                } else if reply.path().ends_with("thumbnail_960x540.m4v") {
                     println!("1{:?}", reply);
                     warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*")
                         .into_response()
@@ -250,19 +272,16 @@ async fn main() {
     let dog_svg_text = include_str!("../dataurl/dog_svg.in");
     let zog_svg_text = include_str!("../dataurl/zog_svg.in");
 
-
-    let dataUrlPng = warp::path("data_url_png").map(move || {
-        warp::reply::html(png_txt)
-    });
-    let dataUrlDinoPng = warp::path("data_url_dino_png").map(move || {
-        warp::reply::html(dino_png_txt)
-    });
-    let data_url_small_jpeg = warp::path("data_url_small_jpeg").map(move || {
-        warp::reply::html(data_url_small_jpeg_txt)
-    });
+    let dataUrlPng = warp::path("data_url_png").map(move || warp::reply::html(png_txt));
+    let dataUrlDinoPng =
+        warp::path("data_url_dino_png").map(move || warp::reply::html(dino_png_txt));
+    let data_url_small_jpeg =
+        warp::path("data_url_small_jpeg").map(move || warp::reply::html(data_url_small_jpeg_txt));
     let data_url_svg = warp::path("data_url_svg").map(move || warp::reply::html(data_url_svg_text));
-    let data_url_dog_svg = warp::path("data_url_dog_svg").map(move || warp::reply::html(dog_svg_text));
-    let data_url_zog_svg = warp::path("data_url_zog_svg").map(move || warp::reply::html(zog_svg_text));
+    let data_url_dog_svg =
+        warp::path("data_url_dog_svg").map(move || warp::reply::html(dog_svg_text));
+    let data_url_zog_svg =
+        warp::path("data_url_zog_svg").map(move || warp::reply::html(zog_svg_text));
     let uri_svg1 = warp::path("uri_svg1").map(move || warp::reply::html("data:image/svg+xml,%3Csvg%20height%3D%22150%22%20width%3D%22400%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22grad1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20style%3D%22stop-color%3Argb(255%2C255%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20style%3D%22stop-color%3Argb(255%2C0%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cellipse%20cx%3D%22200%22%20cy%3D%2270%22%20rx%3D%2285%22%20ry%3D%2255%22%20fill%3D%22url(%23grad1)%22%20%2F%3E%0A%20%20Sorry%2C%20your%20browser%20does%20not%20support%20inline%20SVG.%0A%3C%2Fsvg%3E"));
     let uri_svg2 = warp::path("uri_svg2_html").map(move || warp::reply::html("data:image/svg+xml,%3C!DOCTYPE%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0A%0A%3Csvg%20height%3D%22150%22%20width%3D%22400%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22grad1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20style%3D%22stop-color%3Argb(255%2C255%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20style%3D%22stop-color%3Argb(255%2C0%2C0)%3Bstop-opacity%3A1%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cellipse%20cx%3D%22200%22%20cy%3D%2270%22%20rx%3D%2285%22%20ry%3D%2255%22%20fill%3D%22url(%23grad1)%22%20%2F%3E%0A%20%20Sorry%2C%20your%20browser%20does%20not%20support%20inline%20SVG.%0A%3C%2Fsvg%3E%0A%0A%3C%2Fbody%3E%0A%3C%2Fhtml%3E"));
     let routes = health_check
