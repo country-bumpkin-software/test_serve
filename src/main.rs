@@ -136,6 +136,9 @@ async fn main() {
             } else if reply.path().ends_with("25mb_no_compres.tiff") {
                 println!("1{:?}", reply);
                 warp::reply::with_header(reply, "Content-Type", "image/tiff").into_response()
+            } else if reply.path().ends_with("shapes_com_15kb_bad_mime.tiff") {
+                println!("1{:?}", reply);
+                warp::reply::with_header(reply, "Content-Type", "image/tifff").into_response()
             } else {
                 reply.into_response()
             }
