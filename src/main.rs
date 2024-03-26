@@ -118,7 +118,7 @@ async fn main() {
                     reply.into_response()
                 }
             });
-    let tiff = warp::path("images/tiff")
+    let tiff = warp::path!("images" / "tiff")
         .and(warp::fs::dir("images/tiff"))
         .map(|reply: warp::filters::fs::File| {
             if reply.path().ends_with("shapes_900kb.tiff") {
@@ -296,6 +296,7 @@ async fn main() {
         .or(uri_svg2)
         .or(index)
         .or(audio)
+        .or(tiff)
         .or(redirect_route)
         .or(redirect_video_route)
         .or(redirect_audio_route)
